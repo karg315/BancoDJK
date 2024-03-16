@@ -38,4 +38,22 @@ public class TransaccionController {
         Transaccion nuevaTransaccion = service.crearTransaccion(transaccion);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaTransaccion);
     }
+
+    @PostMapping("/transacciones")
+    public ResponseEntity<Void> realizarTransferencia(@RequestBody Transaccion transaccion) {
+        service.realizarTransferencia(transaccion);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/transaccion/{id}")
+    public ResponseEntity<Transaccion> actualizarTransaccion(@PathVariable Integer idTransaccion, @RequestBody Transaccion transaccionActualizada) {
+        Transaccion transaccion = service.actualizarTransaccion(idTransaccion, transaccionActualizada);
+        return ResponseEntity.ok(transaccion);
+    }
+
+    @DeleteMapping("/transaccion/{id}")
+    public ResponseEntity<Void> eliminarTransaccion(@PathVariable Integer idTransaccion) {
+        service.eliminarTransaccion(idTransaccion);
+        return ResponseEntity.noContent().build();
+    }
 }

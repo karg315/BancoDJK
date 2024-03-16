@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +31,27 @@ public class ClienteController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/cliente/{id}/saldo")
+    public ResponseEntity<BigDecimal> obtenerSaldoTotalCliente(@PathVariable Integer id) {
+        BigDecimal saldoTotal = service.obtenerSaldoTotalCliente(id);
+        return ResponseEntity.ok(saldoTotal);
+    }
+
     @PostMapping("/clientes")
     public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente) {
         Cliente nuevoCliente = service.crearCliente(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCliente);
+    }
+
+    @PutMapping("/cliente/{id}")
+    public ResponseEntity<Cliente> actualizarCliente(@PathVariable Integer clienteId, @RequestBody Cliente clienteActualizado) {
+        Cliente cliente = service.actualizarCliente(clienteId, clienteActualizado);
+        return ResponseEntity.ok(cliente);
+    }
+
+    @DeleteMapping("/cliente/{id}")
+    public ResponseEntity<Void> eliminarCliente(@PathVariable Integer idCliente) {
+        service.eliminarCliente(idCliente);
+        return ResponseEntity.noContent().build();
     }
 }

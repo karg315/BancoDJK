@@ -29,4 +29,22 @@ public class CuentaBancariaService {
     public CuentaBancaria crearCuentaBancaria(CuentaBancaria cuentaBancaria) {
         return repository.save(cuentaBancaria);
     }
+
+    public CuentaBancaria actualizarCuentaBancaria(Integer idCuenta, CuentaBancaria cuentaActualizada) {
+        CuentaBancaria cuenta = repository.findById(idCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta bancaria no encontrada con ID: " + idCuenta));
+
+        cuenta.setSaldo(cuentaActualizada.getSaldo());
+        cuenta.setTipoCuenta(cuentaActualizada.getTipoCuenta());
+        cuenta.setSaldo(cuentaActualizada.getSaldo());
+        cuenta.setFechaApertura(cuentaActualizada.getFechaApertura());
+
+        return repository.save(cuenta);
+    }
+
+    public void eliminarCuentaBancaria(Integer idCuenta) {
+        CuentaBancaria cuenta = repository.findById(idCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta bancaria no encontrada con ID: " + idCuenta));
+        repository.delete(cuenta);
+    }
 }

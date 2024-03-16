@@ -20,19 +20,31 @@ public class CuentaBancariaController {
         this.service = service;
     }
 
-    @GetMapping("/cuentas-bancarias")
+    @GetMapping("/cuentas")
     public List<CuentaBancaria> obtenerCuentasBancarias(){return service.obtenerCuentasBancarias();}
 
-    @GetMapping("/cuentas-bancarias/{id}")
+    @GetMapping("/cuenta/{id}")
     public ResponseEntity<CuentaBancaria> obtenerCuentaPorId(@PathVariable Integer id) {
         Optional<CuentaBancaria> cuentaOptional = service.obtenerCuentaBancaria(id);
         return cuentaOptional.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("cuentas-bancarias")
+    @PostMapping("/cuentas")
     public ResponseEntity<CuentaBancaria> crearCuentaBancaria(@RequestBody CuentaBancaria cuentaBancaria) {
         CuentaBancaria nuevaCuenta = service.crearCuentaBancaria(cuentaBancaria);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaCuenta);
+    }
+
+    @PutMapping("/cuenta/{id}")
+    public ResponseEntity<CuentaBancaria> actualizarCuentaBancaria(@PathVariable Integer idCuenta, @RequestBody CuentaBancaria cuentaActualizada) {
+        CuentaBancaria cuenta = service.actualizarCuentaBancaria(idCuenta, cuentaActualizada);
+        return ResponseEntity.ok(cuenta);
+    }
+
+    @DeleteMapping("/cuenta/{id}")
+    public ResponseEntity<Void> eliminarCuentaBancaria(@PathVariable Integer idCuenta) {
+        service.eliminarCuentaBancaria(idCuenta);
+        return ResponseEntity.noContent().build();
     }
 }
